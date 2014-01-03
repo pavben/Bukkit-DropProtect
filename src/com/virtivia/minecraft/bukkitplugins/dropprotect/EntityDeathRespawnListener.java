@@ -14,11 +14,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class EntityDeathRespawnListener implements Listener {
 	@SuppressWarnings("unused")
 	private JavaPlugin plugin;
-	private HashMap<Player, EquippedItemsSnapshot> playerItemSnapshots;
+	private HashMap<String, EquippedItemsSnapshot> playerItemSnapshots;
 	
 	public EntityDeathRespawnListener(JavaPlugin plugin) {
 		this.plugin = plugin;
-		this.playerItemSnapshots = new HashMap<Player, EquippedItemsSnapshot>();
+		this.playerItemSnapshots = new HashMap<String, EquippedItemsSnapshot>();
 	}
 	
 	// TODO: Do we need synchronized?
@@ -38,15 +38,16 @@ public class EntityDeathRespawnListener implements Listener {
 			equippedItemsSnapshot.filterItemStackList(event.getDrops());
 			
 			// add the snapshot to load after the player respawns
-			playerItemSnapshots.put(player, equippedItemsSnapshot);
+			playerItemSnapshots.put(player.getName(), equippedItemsSnapshot);
 		}
 	}
 	
 	@EventHandler(priority=EventPriority.NORMAL)
 	public synchronized void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
+		String playerName = player.getName();
 
-		EquippedItemsSnapshot equippedItemsSnapshot = playerItemSnapshots.get(player);
+		EquippedItemsSnapshot equippedItemsSnapshot = playerItemSnapshots.get(playerName);
 		
 		// if we have an inventory snapshot for this player
 		if (equippedItemsSnapshot != null) {
@@ -54,7 +55,7 @@ public class EntityDeathRespawnListener implements Listener {
 			equippedItemsSnapshot.mergeToPlayerInventory(player);
 			
 			// remove the snapshot since it has now been applied
-			playerItemSnapshots.remove(equippedItemsSnapshot);
+			playerItemSnapshots.remove(playerName);
 		}
 	}
 }

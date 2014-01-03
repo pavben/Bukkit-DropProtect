@@ -27,6 +27,7 @@ public class EntityDeathRespawnListener implements Listener {
 		if (event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
 			
+			// only active in survival mode
 			if (!player.getGameMode().equals(GameMode.SURVIVAL)) {
 				return;
 			}

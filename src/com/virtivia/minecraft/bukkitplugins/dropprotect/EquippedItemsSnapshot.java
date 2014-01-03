@@ -72,8 +72,12 @@ public class EquippedItemsSnapshot {
 		
 		for (ItemStack itemStack : list) {
 			if (remainingEquippedItems.contains(itemStack)) {
+				// if the item is drop-protected, we don't add it to filteredList, thus preventing it from dropping
+				
+				// now that this item has been skipped, remove it to avoid skipping the next identical item
 				remainingEquippedItems.remove(itemStack);
 			} else {
+				// if the item is not drop-protected, allow it to drop
 				filteredList.add(itemStack);
 			}
 		}

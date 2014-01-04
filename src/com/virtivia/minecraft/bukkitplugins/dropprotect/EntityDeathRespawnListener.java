@@ -21,9 +21,8 @@ public class EntityDeathRespawnListener implements Listener {
 		this.playerItemSnapshots = new HashMap<String, EquippedItemsSnapshot>();
 	}
 	
-	// TODO: Do we need synchronized?
 	@EventHandler(priority=EventPriority.HIGHEST)
-	public synchronized void onEntityDeath(EntityDeathEvent event) {
+	public void onEntityDeath(EntityDeathEvent event) {
 		if (event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
 			
@@ -43,7 +42,7 @@ public class EntityDeathRespawnListener implements Listener {
 	}
 	
 	@EventHandler(priority=EventPriority.NORMAL)
-	public synchronized void onPlayerRespawn(PlayerRespawnEvent event) {
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		String playerName = player.getName();
 

@@ -11,12 +11,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class EquippedItemsSnapshot {
-	private final int NUM_SLOTS = 9;
-	
 	private ItemStack helmet, chestplate, leggings, boots;
 	private ItemStack[] itemsInSlots;
 	
-	public EquippedItemsSnapshot(Player player) {
+	public EquippedItemsSnapshot(Player player, int numProtectedSlots) {
 		PlayerInventory inventory = player.getInventory();
 		
 		helmet = inventory.getHelmet();
@@ -24,9 +22,9 @@ public class EquippedItemsSnapshot {
 		leggings = inventory.getLeggings();
 		boots = inventory.getBoots();
 		
-		itemsInSlots = new ItemStack[NUM_SLOTS];
+		itemsInSlots = new ItemStack[numProtectedSlots];
 		
-		for (int i = 0; i < NUM_SLOTS; i++) {
+		for (int i = 0; i < itemsInSlots.length; i++) {
 			itemsInSlots[i] = inventory.getItem(i);
 		}
 	}
@@ -39,7 +37,7 @@ public class EquippedItemsSnapshot {
 		inventory.setLeggings(leggings);
 		inventory.setBoots(boots);
 		
-		for (int i = 0; i < NUM_SLOTS; i++) {
+		for (int i = 0; i < itemsInSlots.length; i++) {
 			inventory.setItem(i, itemsInSlots[i]);
 		}
 	}
@@ -52,7 +50,7 @@ public class EquippedItemsSnapshot {
 		addIfNotNull(set, leggings);
 		addIfNotNull(set, boots);
 		
-		for (int i = 0; i < NUM_SLOTS; i++) {
+		for (int i = 0; i < itemsInSlots.length; i++) {
 			addIfNotNull(set, itemsInSlots[i]);
 		}
 		

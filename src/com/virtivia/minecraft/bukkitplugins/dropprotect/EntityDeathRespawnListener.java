@@ -14,10 +14,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class EntityDeathRespawnListener implements Listener {
 	@SuppressWarnings("unused")
 	private JavaPlugin plugin;
+	private int numProtectedSlots;
 	private HashMap<String, EquippedItemsSnapshot> playerItemSnapshots;
 	
-	public EntityDeathRespawnListener(JavaPlugin plugin) {
+	public EntityDeathRespawnListener(JavaPlugin plugin, int numProtectedSlots) {
 		this.plugin = plugin;
+		this.numProtectedSlots = numProtectedSlots;
 		this.playerItemSnapshots = new HashMap<String, EquippedItemsSnapshot>();
 	}
 	
@@ -30,8 +32,8 @@ public class EntityDeathRespawnListener implements Listener {
 			if (!player.getGameMode().equals(GameMode.SURVIVAL)) {
 				return;
 			}
-						
-			EquippedItemsSnapshot equippedItemsSnapshot = new EquippedItemsSnapshot(player);
+			
+			EquippedItemsSnapshot equippedItemsSnapshot = new EquippedItemsSnapshot(player, this.numProtectedSlots);
 			
 			// remove items in equippedItemsSnapshot from the drops
 			equippedItemsSnapshot.filterItemStackList(event.getDrops());

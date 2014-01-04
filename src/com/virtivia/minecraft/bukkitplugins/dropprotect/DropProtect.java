@@ -3,15 +3,32 @@ package com.virtivia.minecraft.bukkitplugins.dropprotect;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DropProtect extends JavaPlugin {
+	private static final int MAX_INVENTORY_SLOTS = 36;
+	private static final String NUM_PROTECTED_SLOTS_KEY = "protected-slots";
+	
 	@Override
 	public void onEnable() {
-		getLogger().info("DropProtect enabled");
+		int numProtectedSlots = this.getConfig().getInt(NUM_PROTECTED_SLOTS_KEY);
 		
-		getServer().getPluginManager().registerEvents(new EntityDeathRespawnListener(this) , this);
+		if (numProtectedSlots < 0) {
+			numProtectedSlots = 0;
+		} else if (numProtectedSlots > MAX_INVENTORY_SLOTS) {
+			numProtectedSlots = MAX_INVENTORY_SLOTS;
+		}
+		
+		this.getLogger().info("DropProtect enabled with " + numProtectedSlots + " protected slots.");
+		
+		// Write the config to disk
+		this.getConfig().options().copyDefaults(true);
+		this.getConfig().options().copyHeader(true);
+		
+		this.saveConfig();
+		
+		this.getServer().getPluginManager().registerEvents(new EntityDeathRespawnListener(this, numProtectedSlots) , this);
 	}
 	
 	@Override
 	public void onDisable() {
-		getLogger().info("DropProtect disabled");
+		this.getLogger().info("DropProtect disabled");
 	}
 }

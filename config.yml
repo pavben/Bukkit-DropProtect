@@ -1,0 +1,21 @@
+# You can choose how many hotbar and inner inventory slots are protected.
+# Note that Armor slots are always protected.
+# 
+# The first 9 are the hotbar slots.
+# Anything after 9 will begin to include the inner inventory, starting with the top left.
+# 
+# |------ inner inventory ------|
+# | [10][11][12]...........[18] |
+# | [19][20][21]...........[27] |
+# | [28][29][30]...........[36] |
+# |---------- hotbar -----------|
+# | [1][2][3][4][5][6][7][8][9] |
+# |-----------------------------|
+# 
+# Examples
+# 
+# If set to 3, only the first 3 hotbar slots are protected.
+# If set to 9, all hotbar slots and none of the inner inventory slots are protected.
+# If set to 12, all hotbar slots and 3 (12 - 9) inner inventory slots are protected.
+# If set to 36, all hotbar and inner inventory slots are protected (i.e. nothing dropped).
+protected-slots: 9

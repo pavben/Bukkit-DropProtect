@@ -1,4 +1,10 @@
 name: DropProtect
 main: com.virtivia.minecraft.bukkitplugins.dropprotect.DropProtect
-version: 0.1
+version: 0.2
 author: pavben
+commands:
+  dropprotect:
+    description: Show which item slots are protected on death.
+    usage: /dropprotect
+    permission:
+    permission-message: N/A

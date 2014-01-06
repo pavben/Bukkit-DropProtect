@@ -2,6 +2,7 @@ package com.virtivia.minecraft.bukkitplugins.dropprotect;
 
 import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -51,6 +52,10 @@ public class EntityDeathRespawnListener implements Listener {
 		if (protectedItemsSnapshot != null) {
 			// merge the snapshot into the player's inventory, dropping overflow items at the respawn location
 			protectedItemsSnapshot.mergeIntoPlayerInventory(player, event.getRespawnLocation());
+			
+			if (protectedItemsSnapshot.hasNonEmptyItems()) {
+				player.sendMessage("[" + ChatColor.GREEN + "DropProtect" + ChatColor.RESET + "] Inventory restored. Type /dropprotect for details.");
+			}
 			
 			// remove the snapshot since it has now been applied
 			playerItemSnapshots.remove(playerName);

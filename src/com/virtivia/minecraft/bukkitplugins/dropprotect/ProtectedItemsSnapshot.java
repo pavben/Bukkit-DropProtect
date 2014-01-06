@@ -80,6 +80,22 @@ public class ProtectedItemsSnapshot {
 		return (item != null && item.getType() != Material.AIR);
 	}
 	
+	public boolean hasNonEmptyItems() {
+		for (ItemStack item : savedArmorContents) {
+			if (isNonEmptyItem(item)) {
+				return true;
+			}
+		}
+		
+		for (ItemStack item : savedInventoryContents) {
+			if (isNonEmptyItem(item)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public void mergeIntoPlayerInventory(Player player, Location overflowDropLocation) {
 		PlayerInventory inventory = player.getInventory();
 		

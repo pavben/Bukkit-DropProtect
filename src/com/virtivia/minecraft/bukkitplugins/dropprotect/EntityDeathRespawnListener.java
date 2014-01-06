@@ -15,12 +15,12 @@ public class EntityDeathRespawnListener implements Listener {
 	@SuppressWarnings("unused")
 	private JavaPlugin plugin;
 	private int numProtectedSlots;
-	private HashMap<String, EquippedItemsSnapshot> playerItemSnapshots;
+	private HashMap<String, ProtectedItemsSnapshot> playerItemSnapshots;
 	
 	public EntityDeathRespawnListener(JavaPlugin plugin, int numProtectedSlots) {
 		this.plugin = plugin;
 		this.numProtectedSlots = numProtectedSlots;
-		this.playerItemSnapshots = new HashMap<String, EquippedItemsSnapshot>();
+		this.playerItemSnapshots = new HashMap<String, ProtectedItemsSnapshot>();
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST)
@@ -33,27 +33,24 @@ public class EntityDeathRespawnListener implements Listener {
 				return;
 			}
 			
-			EquippedItemsSnapshot equippedItemsSnapshot = new EquippedItemsSnapshot(player, this.numProtectedSlots);
-			
-			// remove items in equippedItemsSnapshot from the drops
-			equippedItemsSnapshot.filterItemStackList(event.getDrops());
+			ProtectedItemsSnapshot protectedItemsSnapshot = new ProtectedItemsSnapshot(player, event.getDrops(), numProtectedSlots);
 			
 			// add the snapshot to load after the player respawns
-			playerItemSnapshots.put(player.getName(), equippedItemsSnapshot);
+			playerItemSnapshots.put(player.getName(), protectedItemsSnapshot);
 		}
 	}
-	
-	@EventHandler(priority=EventPriority.NORMAL)
+    
+	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		String playerName = player.getName();
-
-		EquippedItemsSnapshot equippedItemsSnapshot = playerItemSnapshots.get(playerName);
+		
+		ProtectedItemsSnapshot protectedItemsSnapshot = playerItemSnapshots.get(playerName);
 		
 		// if we have an inventory snapshot for this player
-		if (equippedItemsSnapshot != null) {
-			// merge the snapshot into the player's inventory
-			equippedItemsSnapshot.mergeToPlayerInventory(player);
+		if (protectedItemsSnapshot != null) {
+			// merge the snapshot into the player's inventory, dropping overflow items at the respawn location
+			protectedItemsSnapshot.mergeIntoPlayerInventory(player, event.getRespawnLocation());
 			
 			// remove the snapshot since it has now been applied
 			playerItemSnapshots.remove(playerName);

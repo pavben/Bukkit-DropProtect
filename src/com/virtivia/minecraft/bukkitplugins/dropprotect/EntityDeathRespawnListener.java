@@ -10,17 +10,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class EntityDeathRespawnListener implements Listener {
-	@SuppressWarnings("unused")
-	private JavaPlugin plugin;
-	private int numProtectedSlots;
+	private DropProtect dropProtect;
 	private HashMap<String, ProtectedItemsSnapshot> playerItemSnapshots;
 	
-	public EntityDeathRespawnListener(JavaPlugin plugin, int numProtectedSlots) {
-		this.plugin = plugin;
-		this.numProtectedSlots = numProtectedSlots;
+	public EntityDeathRespawnListener(DropProtect dropProtect) {
+		this.dropProtect = dropProtect;
 		this.playerItemSnapshots = new HashMap<String, ProtectedItemsSnapshot>();
 	}
 	
@@ -33,6 +29,8 @@ public class EntityDeathRespawnListener implements Listener {
 			if (!player.getGameMode().equals(GameMode.SURVIVAL)) {
 				return;
 			}
+			
+			int numProtectedSlots = this.dropProtect.getNumProtectedSlotsForPlayer(player);
 			
 			ProtectedItemsSnapshot protectedItemsSnapshot = new ProtectedItemsSnapshot(player, event.getDrops(), numProtectedSlots);
 			

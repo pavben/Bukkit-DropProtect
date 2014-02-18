@@ -25,22 +25,8 @@ public class ProtectedItemsSnapshot {
 		// Save armor contents while removing them from drops
 		savedArmorContents = filterItemsArrayBySet(player.getInventory().getArmorContents(), dropsMultiSet);
 		
-		/* DEBUG
-		player.sendMessage("savedArmorContents");
-		for (ItemStack item : savedArmorContents) {
-			player.sendMessage("- " + item);
-		}
-		*/
-		
 		// Same for inventory
 		savedInventoryContents = filterItemsArrayBySet(Arrays.copyOfRange(player.getInventory().getContents(), 0, numProtectedSlots), dropsMultiSet);
-		
-		/* DEBUG
-		player.sendMessage("savedInventoryContents");
-		for (ItemStack item : savedInventoryContents) {
-			player.sendMessage("- " + item);
-		}
-		*/
 		
 		// At this point, saved*Contents will contain only the items that were in dropsMultiSet
 		// For each item in saved*Contents, a corresponding item in dropsMultiSet was removed
@@ -50,13 +36,6 @@ public class ProtectedItemsSnapshot {
 		// NOTE: drops.retainAll(dropsMultiSet) would not handle duplicates correctly, so we do this as follows.
 		drops.clear();
 		drops.addAll(dropsMultiSet);
-		
-		/* DEBUG
-		player.sendMessage("drops");
-		for (ItemStack item : drops) {
-			player.sendMessage("- " + item);
-		}
-		*/
 	}
 	
 	private ItemStack[] filterItemsArrayBySet(ItemStack[] items, AbstractCollection<ItemStack> drops) {
@@ -123,7 +102,7 @@ public class ProtectedItemsSnapshot {
 			if (isNonEmptyItem(savedItems[i])) {
 				// If there is already an item in a slot we have saved
 				if (isNonEmptyItem(itemsToSet[i])) {
-					// Add that time to overflows as we're about to overwrite it
+					// Add that item to overflows as we're about to overwrite it
 					overflows.add(itemsToSet[i]);
 				}
 				

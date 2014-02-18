@@ -19,3 +19,4 @@
 # If set to 12, all hotbar slots and 3 (12 - 9) inner inventory slots are protected.
 # If set to 36, all hotbar and inner inventory slots are protected (i.e. nothing dropped).
 protected-slots: 9
+permissions:
